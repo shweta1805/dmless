@@ -2,14 +2,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+type Question = {
+  question: string;
+  options: string[];
+  correct: string;
+};
+
 export default function CreateJob() {
   const router = useRouter();
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [email, setEmail] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
-  const [questions, setQuestions] = useState(
+  const [questions, setQuestions] = useState<Question[]>(
     Array(5).fill({
       question: "",
       options: ["", "", "", ""],
@@ -19,8 +25,8 @@ export default function CreateJob() {
 
   const handleChange = (
     qIndex: number,
-    field: string,
-    value: any
+    field: keyof Question,
+    value: string
   ) => {
     const updated = [...questions];
     updated[qIndex] = {
@@ -79,7 +85,7 @@ export default function CreateJob() {
         onChange={(e) => setEmail(e.target.value)}
       />
 
-      {questions.map((q, i) => (
+      {questions.map((q: Question, i: number) => (
         <div key={i} className="border p-4 mb-6 rounded">
           <input
             className="border p-2 w-full mb-3"
@@ -89,7 +95,7 @@ export default function CreateJob() {
             }
           />
 
-          {q.options.map((opt, j) => (
+          {q.options.map((opt: string, j: number) => (
             <input
               key={j}
               className="border p-2 w-full mb-2"
